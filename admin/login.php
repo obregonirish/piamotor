@@ -2,5 +2,36 @@
 require_once '../config.php'; $pageTitle='Admin login'; $error='';
 if($_SERVER['REQUEST_METHOD']==='POST'){verify_csrf();$email=trim($_POST['email']??'');$password=$_POST['password']??'';$st=$pdo->prepare("SELECT * FROM admins WHERE email=?");$st->execute([$email]);$admin=$st->fetch();if($admin&&password_verify($password,$admin['password'])){session_regenerate_id(true);$_SESSION['admin_id']=$admin['id'];$_SESSION['admin_name']=$admin['name'];header('Location: dashboard.php');exit;} $error='Incorrect admin email or password.';}
 require '../includes/header.php'; ?>
-<div class="auth-wrap"><div class="auth-card"><div class="auth-panel"><div class="eyebrow">MANAGEMENT PORTAL</div><h2 class="fw-black mb-4">Admin login</h2><?php if($error): ?><div class="alert alert-danger"><?= e($error) ?></div><?php endif; ?><form method="post"><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>"><div class="mb-3"><label>Email address</label><input type="email" name="email" class="form-control" required></div><div class="mb-3"><label>Password</label><input type="password" name="password" class="form-control" required></div><button class="btn btn-yellow w-100">Log in as admin</button></form><a href="../index.php" class="small text-warning d-inline-block mt-3">Back to website</a></div><div class="auth-side"><div><div class="eyebrow">PIA MOTOR RENTAL</div><h2>ADMIN <span>PORTAL</span></h2></div></div></div></div>
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-panel">
+            <div class="eyebrow">MANAGEMENT PORTAL</div>
+            <h2 class="fw-black mb-4">Admin login</h2>
+            <?php if($error): ?>
+                <div class="alert alert-danger"><?= e($error) ?>
+            </div>
+            <?php endif; ?>
+            <form method="post"><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+            <div class="mb-3"><label>Email address</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+        <button class="btn btn-yellow w-100">Log in as admin</button>
+    </form>
+    <a href="../index.php" class="small text-warning d-inline-block mt-3">Back to website</a>
+    <a href="register.php"
+   class="small text-warning d-inline-block mt-3 ms-5">
+    Create Admin Account
+</a>
+</div>
+<div class="auth-side"><div>
+    <div class="eyebrow">PIA MOTOR RENTAL</div>
+    <h2>ADMIN <span>PORTAL</span></h2>
+</div>
+</div>
+</div>
+</div>
 <?php require '../includes/footer.php'; ?>

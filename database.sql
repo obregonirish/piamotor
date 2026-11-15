@@ -1,6 +1,8 @@
 CREATE DATABASE IF NOT EXISTS pia_motor_rental CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE pia_motor_rental;
 
+
+
 CREATE TABLE IF NOT EXISTS users (
  id INT AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(120) NOT NULL,

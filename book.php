@@ -5,6 +5,25 @@ if($_SERVER['REQUEST_METHOD']==='POST'){verify_csrf();$start=$_POST['start_date'
  else{$a=new DateTime($start);$b=new DateTime($end);$days=max(1,(int)$a->diff($b)->days+1);$total=$days*(float)$bike['price_per_day'];$st=$pdo->prepare("INSERT INTO bookings(user_id,motorcycle_id,start_date,end_date,total_amount,notes) VALUES(?,?,?,?,?,?)");$st->execute([$_SESSION['user_id'],$id,$start,$end,$total,$notes]);header('Location: my_bookings.php?created=1');exit;}
 }
 require 'includes/header.php'; ?>
-<section class="page-banner"><div class="container"><div class="eyebrow">RESERVE YOUR RIDE</div><h1>Book <?= e($bike['name']) ?></h1></div></section>
-<section class="section-pad"><div class="container"><div class="row g-4"><div class="col-lg-5"><div class="bike-card"><img class="bike-img" src="<?= e($bike['image'] ?: 'assets/images/hero-motorcycle.svg') ?>" alt="<?= e($bike['name']) ?>"><div class="card-body"><h4 class="fw-bold"><?= e($bike['name']) ?></h4><p class="text-secondary"><?= e($bike['description']) ?></p><div class="price">₱<?= number_format((float)$bike['price_per_day'],2) ?><small> / day</small></div></div></div></div><div class="col-lg-7"><div class="content-card"><h3 class="fw-bold mb-3">Booking details</h3><?php if($error): ?><div class="alert alert-danger"><?= e($error) ?></div><?php endif; ?><form method="post"><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>"><input type="hidden" name="motorcycle_id" value="<?= (int)$bike['id'] ?>"><div class="row"><div class="col-md-6 mb-3"><label class="form-label">Start date</label><input type="date" name="start_date" class="form-control" required></div><div class="col-md-6 mb-3"><label class="form-label">End date</label><input type="date" name="end_date" class="form-control" required></div></div><div class="mb-3"><label class="form-label">Additional notes</label><textarea class="form-control" name="notes" rows="4" placeholder="Any details for your booking?"></textarea></div><p class="small-muted">Your request will be marked as pending until the admin reviews it. Final charges may be confirmed by the rental team.</p><button class="btn btn-yellow">Submit booking request</button></form></div></div></div></div></section>
+<section class="page-banner"><div class="container"><div class="eyebrow">RESERVE YOUR RIDE</div>
+<h1>Book <?= e($bike['name']) ?></h1>
+</div></section>
+<section class="section-pad"><div class="container"><div class="row g-4"><div class="col-lg-5"><div class="bike-card"><img class="bike-img" src="<?= e($bike['image'] ?: 'assets/images/hero-motorcycle.svg') ?>" alt="<?= e($bike['name']) ?>"><div class="card-body"><h4 class="fw-bold"><?= e($bike['name']) ?></h4>
+<p class="text-secondary"><?= e($bike['description']) ?></p>
+<div class="price">₱<?= number_format((float)$bike['price_per_day'],2) ?><small> / day</small></div>
+</div></div></div>
+<div class="col-lg-7"><div class="content-card">
+    <h3 class="fw-bold mb-3">Booking details</h3>
+    <?php if($error): ?><div class="alert alert-danger"><?= e($error) ?></div>
+        <?php endif; ?><form method="post">
+            <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+        <input type="hidden" name="motorcycle_id" value="<?= (int)$bike['id'] ?>">
+        <div class="row"><div class="col-md-6 mb-3"><label class="form-label">Start date</label><input type="date" name="start_date" class="form-control" required></div>
+        <div class="col-md-6 mb-3"><label class="form-label">End date</label><input type="date" name="end_date" class="form-control" required></div>
+    </div><div class="mb-3"><label class="form-label">Additional notes</label><textarea class="form-control" name="notes" rows="4" placeholder="Any details for your booking?"></textarea></div>
+    <p class="small-muted">Your request will be marked as pending until the admin reviews it. Final charges may be confirmed by the rental team.</p>
+    <button class="btn btn-yellow">Submit booking request</button>
+</form></div>
+</div></div>
+</div></section>
 <?php require 'includes/footer.php'; ?>
